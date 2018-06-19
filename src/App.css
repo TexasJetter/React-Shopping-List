@@ -1,0 +1,58 @@
+.app-header {
+  background-color: rgb(235, 132, 15);
+  color: white;
+  height: 45px;
+  line-height: 45px;
+}
+.app-logo {
+  height: 40px;
+  float: left;
+}
+.app-title {
+  float: left;
+}
+.app-actions {
+  float: right;
+  margin-right: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.app-actions:hover {
+  color: gray;
+}
+
+.app-content {
+  position: relative;
+}
+.app-content-title {
+  text-align: center;
+  background-color: rgb(250, 161, 59);
+  color: white;
+}
+.app-nav {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  top: 45px;
+  width: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  -webkit-box-shadow: -5px 1px 10px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -5px 1px 10px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: -5px 1px 10px 0px rgba(0, 0, 0, 0.75);
+  transition: all 0.5s;
+}
+.app-nav.show {
+  display: block;
+  opacity: 1;
+  width: 50%;
+  transition: all 0.5s;
+}
+.app-nav-item {
+  cursor: pointer;
+  padding: 5px;
+}
+.app-nav-item:hover {
+  background-color: rgb(184, 184, 184);
+}

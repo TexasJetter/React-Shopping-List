@@ -1,0 +1,43 @@
+{
+  "name": "Shopping List",
+  "short_name": "Shipping",
+  "description": "PWA for shopping list",
+  "icons": [
+    {
+      "src": "favocon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favocon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "mstile-150x150.png",
+      "sizes": "150x150",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 24x24",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#eb840f",
+  "lang": "English",
+  "orientation": "portrait"
+}
