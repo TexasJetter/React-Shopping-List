@@ -4,7 +4,7 @@ import AppContextProvider from './AppContext';
 import Header from './components/layout/Header';
 import Content from './components/layout/Content';
 import Nav from './components/feature/Nav';
-import categoryService from './service/categoryService';
+//import categoryService from './service/categoryService';
 
 import './App.css';
 
