@@ -1,3 +1,10 @@
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+
 .app-header {
   background-color: rgb(235, 132, 15);
   color: white;
@@ -55,4 +62,13 @@
 }
 .app-nav-item:hover {
   background-color: rgb(184, 184, 184);
+}
+.app-nav-item img {
+  height: 25px;
+}
+.app-nav-item input {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid rgb(184, 184, 184);
+  width: 60%;
 }

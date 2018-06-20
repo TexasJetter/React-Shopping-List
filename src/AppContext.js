@@ -39,6 +39,27 @@ class AppContextProvider extends Component {
               settings: { ...prevState.settings, [name]: value }
             }));
           },
+          updateCategory: event => {
+            const newValue = event.target.value;
+            const categoryId = event.target.name;
+            categoryService.getCategory(categoryId, null, response => {
+              if (response.Name !== newValue) {
+                categoryService.saveCategory(categoryId, newValue, false);
+              }
+            });
+          },
+          deleteCategory: categoryId => {
+            categoryService.deleteCategory(categoryId, () => {
+              categoryService.saveSelectedCategoryId(null);
+              this.setState((prevState, props) => ({
+                settings: {
+                  ...prevState.settings,
+                  category: {},
+                  showNav: false
+                }
+              }));
+            });
+          },
           setCategory: categoryId => {
             categoryService.saveSelectedCategoryId(categoryId);
             categoryService.getCategory(categoryId, null, response => {
@@ -51,6 +72,7 @@ class AppContextProvider extends Component {
               }));
             });
           },
+
           setShowNav: showHide => {
             this.setState((prevState, props) => ({
               settings: {

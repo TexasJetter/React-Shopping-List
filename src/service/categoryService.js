@@ -7,76 +7,77 @@ const categoryService = {
   getCategories(callback) {
     let categories = JSON.parse(localStorage.getItem(_categoriesKey));
     if (categories !== null) {
-      callback(
-        categories.filter(function(c) {
-          return c.IsDeleted === false;
-        })
-      );
+      if (callback)
+        callback(
+          categories.filter(function(c) {
+            return c.IsDeleted === false;
+          })
+        );
     } else {
       this.seed(defaultRecords => {
-        callback(defaultRecords);
+        if (callback) callback(defaultRecords);
       });
     }
   },
   getCategory(id, categories, callback) {
     if (categories === null) {
-      categories = this.getCategories(response => {
-        categories = response;
+      this.getCategories(categories => {
         let match = categories.filter(function(c) {
           return c.Id === parseInt(id, 10);
         });
-        callback(match.length === 1 ? match[0] : {});
+        if (callback) callback(match.length === 1 ? match[0] : {});
       });
     } else {
       let match = categories.filter(function(c) {
         return c.Id === parseInt(id, 10);
       });
-      callback(match.length === 1 ? match[0] : {});
+      if (callback) callback(match.length === 1 ? match[0] : {});
     }
   },
   addCategory(name, categories, callback) {
-    if (categories === null) categories = this.getCategories();
-    this.getNextId(categories, newId => {
-      categories.push({
-        Id: newId,
-        Name: name,
-        IsDeleted: false,
-        IsUploaded: false
+    if (categories === null)
+      categories = this.getCategories(categories => {
+        this.getNextId(categories, newId => {
+          categories.push({
+            Id: newId,
+            Name: name,
+            IsDeleted: false,
+            IsUploaded: false
+          });
+          localStorage[_categoriesKey] = JSON.stringify(categories);
+          if (callback) callback(newId);
+        });
       });
-      localStorage[this._categoriesKey] = JSON.stringify(categories);
-      callback(newId);
-    });
   },
   saveCategory(id, name, isDeleted, callback) {
-    let response = null;
-    let categories = this.getCategories();
-    let existingRecord = this.getCategory(id, categories);
-    let i = categories.indexOf(existingRecord);
-    if (i > -1) {
-      categories[i] = {
-        Id: existingRecord.Id,
-        Name: name,
-        IsDeleted: isDeleted,
-        IsUploaded: false
-      };
-      localStorage[this._categoriesKey] = JSON.stringify(categories);
-      response = id;
-    } else {
-      response = this.addCategory(name, categories, callback);
-    }
-    callback(response);
+    this.getCategories(categories => {
+      this.getCategory(id, categories, existingRecord => {
+        let i = categories.indexOf(existingRecord);
+        if (i > -1) {
+          categories[i] = {
+            Id: existingRecord.Id,
+            Name: name,
+            IsDeleted: isDeleted,
+            IsUploaded: false
+          };
+          localStorage[_categoriesKey] = JSON.stringify(categories);
+          if (callback) callback(id);
+        } else {
+          this.addCategory(name, categories, newId => {
+            if (callback) callback(newId);
+          });
+        }
+      });
+    });
   },
   deleteCategory(id, callback) {
-    let response = null;
-    let categories = this.getCategories();
-    let existingRecord = this.getCategory(id, categories);
-    response = this.saveCategory(
-      existingRecord.Id,
-      existingRecord.Name,
-      true,
-      callback
-    );
-    callback(response);
+    this.getCategories(categories => {
+      this.getCategory(id, categories, existingRecord => {
+        this.saveCategory(existingRecord.Id, existingRecord.Name, true, id => {
+          if (callback) callback(id);
+        });
+      });
+    });
   },
   saveSelectedCategoryId(id) {
     localStorage[_categorySelectedIdKey] = id;
@@ -84,23 +85,20 @@ const categoryService = {
   getSelectedCategoryId(callback) {
     let selectedId = localStorage.getItem(_categorySelectedIdKey);
     if (selectedId !== null) {
-      this.getCategory(selectedId, null, response => {
-        callback(response);
+      this.getCategory(selectedId, null, category => {
+        if (callback) callback(category);
       });
     } else {
-      callback(null);
+      if (callback) callback(null);
     }
   },
-
   getNextId(records, callback) {
-    let response = null;
     if (records === null) return -1;
     let maxId = 0;
     for (var i = 0; i < records.length; i++) {
       if (records[i].Id > maxId) maxId = records[i].Id;
     }
-    response = maxId + 1;
-    callback(response);
+    if (callback) callback(maxId + 1);
   },
   seed(callback) {
     let categories = [];
@@ -121,7 +119,7 @@ const categoryService = {
       });
     });
     localStorage[_categoriesKey] = JSON.stringify(categories);
-    callback(categories);
+    if (callback) callback(categories);
   }
 };
 
